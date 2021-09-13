@@ -1,10 +1,24 @@
 package com.hackerrank.weather.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Data
+@Entity
 public class Weather {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Column(name="date3")
     private Date date;
 
     private Float lat;
@@ -12,7 +26,9 @@ public class Weather {
     private String city;
     private String state;
 
-    private List<Double> temperatures;
+    @Column
+    @ElementCollection(targetClass=Double.class)
+    private List<Double> temperatures = new ArrayList<>();
 
     public Weather(Integer id, Date date, Float lat, Float lon, String city, String state, List<Double> temperatures) {
         this.id = id;
@@ -34,61 +50,5 @@ public class Weather {
     }
 
     public Weather() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Float getLat() {
-        return lat;
-    }
-
-    public void setLat(Float lat) {
-        this.lat = lat;
-    }
-
-    public Float getLon() {
-        return lon;
-    }
-
-    public void setLon(Float lon) {
-        this.lon = lon;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public List<Double> getTemperatures() {
-        return temperatures;
-    }
-
-    public void setTemperatures(List<Double> temperatures) {
-        this.temperatures = temperatures;
     }
 }
